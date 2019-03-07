@@ -29,7 +29,7 @@ public class TrainSimulator {
         
         // Check if we need to pause and get user input
         if (TrainSimulator.currentTime % 14400 == 0) {
-            System.out.println("A day passed - chekc with user!");
+            System.out.println("A day passed - check with user!");
             return false;
         }
         return true;
