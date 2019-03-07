@@ -21,6 +21,7 @@ public class TrainSimulator {
      * tick() function
      * return True if continuing
      * return False if should stop simulation
+	 *
      */
     public static boolean tick() {
         // Update world (train locations, and others)
