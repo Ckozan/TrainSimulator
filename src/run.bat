@@ -1,0 +1,2 @@
+javac trainsimulator\TrainSimulator.java
+java trainsimulator.TrainSimulator
