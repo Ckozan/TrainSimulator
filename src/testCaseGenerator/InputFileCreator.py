@@ -195,7 +195,7 @@ class Points:
 
             self.freight_schedule[freight + 1] = [home_hub, destination, start_time]
 
-        print(self.freight_schedule)
+        # print(self.freight_schedule)
 
         for passenger in range(self.num_passenger):
             home_hub = random.randint(1, 5)
@@ -212,7 +212,7 @@ class Points:
 
             self.passenger_schedule[passenger + 1] = [home_hub, destinations, departure_times]
 
-        print(self.passenger_schedule)
+        # print(self.passenger_schedule)
 
     def set_coordinates(self):
         for station in self.stations:
@@ -299,7 +299,8 @@ class Points:
             self.set_coordinates()
             self.connect_stations()
             self.connect_hubs()
-            self.print_station_stats(fails)
+            # Uncomment the statement below to see all statistics posted to output files
+            # self.print_station_stats(fails)
             self.create_input_files()
             self.make_map()
 
