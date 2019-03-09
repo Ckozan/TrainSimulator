@@ -1,7 +1,8 @@
 import random
 import matplotlib.pyplot as plt
 import collections
-
+seed = random.randint(1, 10000000)
+random.seed(seed)
 size_list = [18] * 60
 size_list_hubs = [50] * 60
 min_distance = 110
@@ -286,6 +287,10 @@ class Points:
         h.write(statement)
 
         h.close()
+
+        j = open("seed.txt", "w+")
+        j.write("seed: {}".format(seed))
+        j.close()
 
     def run(self):
         failed, fails = self.generate_points()
