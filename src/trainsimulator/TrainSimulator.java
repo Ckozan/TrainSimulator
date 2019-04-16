@@ -119,7 +119,7 @@ public class TrainSimulator {
         Random randGen = new Random();
         for()//however many tracks there are. ask if there is a way to get amount, or if i can just iterate through the whole database
         {
-            int weatherNum = randGen.nextInt(1000)+1;
+            int weatherNum = randGen.nextInt(1000)+1;//should give a number between 1 and 1000
             weatherNum = weatherToInt(weatherNum);
             //then put wetaher num into current part of databse
             //iterate to next
@@ -131,13 +131,13 @@ public class TrainSimulator {
         int answer = 0;//sunny answer aka default
         if(number > 520)//everything but sunny
         {
-            if(number <= 725)//tests fo rif its in the rain category
+            if(number <= 790)//tests fo rif its in the rain category
             {
-                if(number < 656)
+                if(number < 721)
                 {
                     answer = 1; //light rain
                 }
-                else if(number < 716)
+                else if(number < 781)
                 {
                     answer = 2; //medium rain
                 }
@@ -146,13 +146,13 @@ public class TrainSimulator {
                     answer = 3; // heavy rain
                 }
             }
-            else if(number <= 816)//test for if its in the snow category
+            else //test for if its in the snow category
             {
-                if(number < 786)
+                if(number < 941)
                 {
                     answer = 4; //light snow
                 }
-                else if(number < 816)
+                else if(number < 1000)
                 {
                     answer = 5; //medium snow
                 }
@@ -161,37 +161,11 @@ public class TrainSimulator {
                     answer = 6; // heavy snow
                 }
             }
-            else if(number <= 872)//test for hail category
-            {
-                if(number < 868)
-                {
-                    answer = 7; //light hail
-                }
-                else
-                {
-                    answer = 8; // heavy hail
-                }
-            }
-            else//leaves only fog conditions left
-            {
-                if(number < 953)
-                {
-                    answer = 9; //light fog
-                }
-                else if(number < 998)
-                {
-                    answer = 10; //medium fog
-                }
-                else
-                {
-                    answer = 11; // heavy fog
-                }
-            }
         }
         return answer;
     }
     
-    //this is just to convert the numbers 0-11 into a string of what type of weather that is
+    //this is just to convert the numbers 0-6 into a string of what type of weather that is
     public static String intToWeather(int number)
     {
         String answer = "Not Found"; 
@@ -218,19 +192,7 @@ public class TrainSimulator {
             case 6:
                 answer = "Heavy Snow";
                 break;
-            case 7:
-                answer = "Light Hail";
-            case 8:
-                answer = "Heaver Hail";
-            case 9:
-                answer = "Light Fog";
-                break;
-            case 10:
-                answer = "Medium Fog";
-                break;
-            case 11:
-                answer = "Heavy Fog";
-                break;
+            
         }
         return answer;
     }
