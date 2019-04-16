@@ -1,4 +1,5 @@
 package trainsimulator;
+import java.util.Random;
 
 public class TrainSimulator {
 
@@ -48,6 +49,8 @@ public class TrainSimulator {
         // Check if we need to pause and get user input
         if (TrainSimulator.currentTime % 14400 == 0) {
             System.out.println("A day passed - check with user!");
+            //enter the options screen
+            setWeather();//this should set weather for the next day. may as well do it here while they are looking at the options screen
             return false;
         }
         return true;
@@ -85,6 +88,8 @@ public class TrainSimulator {
         //will have to retunr/hold the schedule in some way so its easier to iterate through. 
     }
     
+    //can just be dealt with via function from breakpoint class
+    /*
     public static boolean breakpointReached()
     {
         boolean answer = false;
@@ -92,7 +97,7 @@ public class TrainSimulator {
         //may need to have a parameter for the function that is the break[point condition its checking if true
         return answer;
     }
-    
+    */
     public static void updateRoutes()//could maybe be private
     {
         //call the algorithm to update trains routes
@@ -109,5 +114,124 @@ public class TrainSimulator {
         //how many off the train and how many added
     }
     
+    public static void setWeather()
+    {
+        Random randGen = new Random();
+        for()//however many tracks there are. ask if there is a way to get amount, or if i can just iterate through the whole database
+        {
+            int weatherNum = randGen.nextInt(1000)+1;
+            weatherNum = weatherToInt(weatherNum);
+            //then put wetaher num into current part of databse
+            //iterate to next
+        }
+    }
     
+    private static int weatherToInt(int number)
+    {
+        int answer = 0;//sunny answer aka default
+        if(number > 520)//everything but sunny
+        {
+            if(number <= 725)//tests fo rif its in the rain category
+            {
+                if(number < 656)
+                {
+                    answer = 1; //light rain
+                }
+                else if(number < 716)
+                {
+                    answer = 2; //medium rain
+                }
+                else
+                {
+                    answer = 3; // heavy rain
+                }
+            }
+            else if(number <= 816)//test for if its in the snow category
+            {
+                if(number < 786)
+                {
+                    answer = 4; //light snow
+                }
+                else if(number < 816)
+                {
+                    answer = 5; //medium snow
+                }
+                else
+                {
+                    answer = 6; // heavy snow
+                }
+            }
+            else if(number <= 872)//test for hail category
+            {
+                if(number < 868)
+                {
+                    answer = 7; //light hail
+                }
+                else
+                {
+                    answer = 8; // heavy hail
+                }
+            }
+            else//leaves only fog conditions left
+            {
+                if(number < 953)
+                {
+                    answer = 9; //light fog
+                }
+                else if(number < 998)
+                {
+                    answer = 10; //medium fog
+                }
+                else
+                {
+                    answer = 11; // heavy fog
+                }
+            }
+        }
+        return answer;
+    }
+    
+    //this is just to convert the numbers 0-11 into a string of what type of weather that is
+    public static String intToWeather(int number)
+    {
+        String answer = "Not Found"; 
+        switch(number)
+        {
+            case 0:
+                answer = "Sunny";
+                break;
+            case 1:
+                answer = "Light Rain";
+                break;
+            case 2:
+                answer = "Medium Rain";
+                break;
+            case 3:
+                answer = "Heavy Rain";
+                break;
+            case 4:
+                answer = "Light Snow";
+                break;
+            case 5:
+                answer = "Medium Snow";
+                break;
+            case 6:
+                answer = "Heavy Snow";
+                break;
+            case 7:
+                answer = "Light Hail";
+            case 8:
+                answer = "Heaver Hail";
+            case 9:
+                answer = "Light Fog";
+                break;
+            case 10:
+                answer = "Medium Fog";
+                break;
+            case 11:
+                answer = "Heavy Fog";
+                break;
+        }
+        return answer;
+    }
 }
