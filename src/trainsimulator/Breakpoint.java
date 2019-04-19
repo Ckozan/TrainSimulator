@@ -1,3 +1,6 @@
+
+import java.util.ArrayList;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,6 +11,24 @@
  *
  * @author kyle
  */
-public class Breakpoints {
+public class Breakpoint {
+    //i dont think this has to be imported to the simulator or anything cause it should all be on the same package. but if its not this is gonna be annoying
+    private ArrayList<String> list = new ArrayList<String>();//holds the breakpoints currently set
+    //should make the list 2d with the 2nd dimension being filled with a set array of string that can indicate what type of breakpoint im looking at first ebfore checking for it
+    
+    
+    public Breakpoint()
+    {
+        //i dont think anything should happen here
+    }
+    public void setBreakpoint()//should have multiple of these to be able to add different types of breakpoints
+    {
+    }
+    
+    public void checkBreakpoint()
+    {
+    }
+    
+    
     
 }

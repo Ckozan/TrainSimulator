@@ -4,12 +4,16 @@ import java.util.Random;
 public class TrainSimulator {
 
     private static int currentTime = 0;
+    private static int ticketPrice;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         boolean shouldContinue = true; 
+        
+        //get ticket price here
+        ticketPrice = database.getticketprice();//or something like that
         
         /* two options for this I see. we have a while loop for keep going until user says stop, and an inside for loop that doesnt need the tick funtion
         or we leave it like this and just let the while loop get checked every second after a tick
@@ -195,5 +199,12 @@ public class TrainSimulator {
             
         }
         return answer;
+    }
+    
+    public static void passengerBoarding(String train)//loads and unloads passengers
+    {
+        //look up more stuff before you strat putting code down here @me
+        //dont forget to multiply amount of people borading by ticketprice (HWich reminds me is there a child ticket? probably not cause thatd complicate things)
+        //should i make a train class just to hold info about each train like this?
     }
 }
