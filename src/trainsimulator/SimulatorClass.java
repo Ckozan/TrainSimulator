@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  */
 public class SimulatorClass implements Runnable {
     
-    private int currentTime = 0;
+    public int currentTime = 0;
     private int ticketPrice;
     private int dayNum = 0;
     private ArrayList<String> currentSchedule = new ArrayList<String>();
@@ -119,11 +119,15 @@ public class SimulatorClass implements Runnable {
     public void setWeather()
     {
         Random randGen = new Random();
-        for()//however many tracks there are. ask if there is a way to get amount, or if i can just iterate through the whole database
+        //get track array list from whatever ryan class then iterate through and set the tracks weather and what time the weather is happening(days). 
+        //then put it into database
+        for(arrayList)
         {
             int weatherNum = randGen.nextInt(1000)+1;//should give a number between 1 and 1000
             weatherNum = weatherToInt(weatherNum);
+            //update into 
             //then put wetaher num into current part of databse
+            //stored in 
             //iterate to next
         }
     }
