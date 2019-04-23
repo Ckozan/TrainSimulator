@@ -12,17 +12,27 @@ public class TrainSimulator {
     public static void main(String[] args) {
         boolean shouldContinue = true; 
         
+        
+        /*
+        IMPORTANT
+        
+        it looks like to thread we need to make simualtor its own class (Thatd actually work better for a thread)
+        but idk if this is true when also dealing with a gui
+        this also makes pausing really simple i think cause we can pause either our own thread, or have the gui maybe be chacking for breakpoints 
+        and pause our simulator thread when needed
+        */
         //get ticket price here
-        ticketPrice = database.getticketprice();//or something like that
+        ticketPrice = database.getTicketPrice();//or something like that
         
         /* two options for this I see. we have a while loop for keep going until user says stop, and an inside for loop that doesnt need the tick funtion
         or we leave it like this and just let the while loop get checked every second after a tick
         */
         while(shouldContinue)
         {
-            if()//check for breakpoints here
+            if(Breakpoint.checkBreakpoint())//check for breakpoints here
             {
                 //if found, stop and show what was found
+                //pause screen. other types of stuff
             }
             else//if not found run the simulation like normal
             {
@@ -63,9 +73,6 @@ public class TrainSimulator {
     public static void updateWorld() {
         System.out.print('.');
         
-        // update train locations and status
-        // update routing for trains
-        // update passenger statuses
         
         //check if holiday/weekend first (probably based on days, so once we know how we can write something here)
             //grab either normal or holiday or weekend schedule
@@ -201,10 +208,38 @@ public class TrainSimulator {
         return answer;
     }
     
-    public static void passengerBoarding(String train)//loads and unloads passengers
+    public static void passengerBoarding(String train)//boards passengers onto trai
     {
-        //look up more stuff before you strat putting code down here @me
-        //dont forget to multiply amount of people borading by ticketprice (HWich reminds me is there a child ticket? probably not cause thatd complicate things)
-        //should i make a train class just to hold info about each train like this?
+        if(NotFull)//idk how to figure out last stop right this second
+        {
+            //percentage of people currently on
+            Random ranGen = new Random();
+            int percentInt = ranGen.nextInt(1001);
+            double percentDouble = percentInt /1000;
+            int passengerAvailable = passenegrAmount - maxPassengers;
+            int amount = (int)(percentDouble * passengerAvailable);//truncates so always rounds down
+            CurrentTrain.passengeramount= passengeramount - amount;
+        }
+        else
+        {
+            //do nothing
+        }
+    }
+    
+    public static void passengerUnloading(String train)
+    {
+        if(lastStop)//idk how to figure out last stop right this second
+        {
+            currentTrain.passengeramount = 0;
+        }
+        else
+        {
+            //percentage of people currently on
+            Random ranGen = new Random();
+            int percentInt = ranGen.nextInt(1001);
+            double percentDouble = percentInt /1000;
+            int amount = (int)(percentDouble * passenegrAmount);//truncates so always rounds down
+            CurrentTrain.passengeramount= passengeramount - amount;
+        }
     }
 }

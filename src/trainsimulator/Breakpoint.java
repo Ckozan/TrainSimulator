@@ -23,10 +23,12 @@ public class Breakpoint {
     }
     public void setBreakpoint()//should have multiple of these to be able to add different types of breakpoints
     {
+        //you have to get all of this from the gui.
     }
     
-    public void checkBreakpoint()
+    public boolean checkBreakpoint()
     {
+        return true;
     }
     
     
