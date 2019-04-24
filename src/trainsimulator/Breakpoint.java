@@ -29,7 +29,6 @@ public class Breakpoint {
     
     public boolean checkBreakpoint()
     {
-        // i dont know what the fuck happened but apparently none of this got updated when i just tried to commit and i lost everything. FUCK
         boolean found = false;
         
         if(list.isEmpty())
@@ -47,7 +46,13 @@ public class Breakpoint {
                     if(currentArr[1] == SimulatorClass.getCurrentTime() +"")//assuming its been made into the apporpriate format at some point in time
                     {
                         found = true;//could probably pause thread here, but wait for cams thread code for that
-                        updateDatabase();
+                        HashMap<String,String> map = new HashMap<String,String>();
+                        map.put("Description", "Specified Time was Reached");
+                        map.put("Minute", SimulatorCLass.getCurrentTime() +"");
+                        map.put("Day", SimulatorClass.getDayNum() +"");
+                        map.put("Field1", SimulatorCLass.getCurrentTime() +"");
+                        map.put("Field2", null);//none for Specific Time
+                        updateDatabase(map);
                     }
                 }
                 /*
@@ -57,14 +62,14 @@ public class Breakpoint {
                     if(currentArr[2] == queryResult +"")
                     {
                         found = true;
-                    }
-                }
-                else if(currentArr[0] == "3")//track used a specific number of times
-                {//[1] = trackID, [2] = times visited
-                    //need query of track id getting visited number
-                    if(currentArr[2] == queryResult +"")
-                    {
-                        found = true;
+                        HashMap<String,String> map = new HashMap<String,String>();
+                        map.put("Description", "Station reached set amount of visits");
+                        map.put("Minute", SimulatorCLass.getCurrentTime() +"");
+                        map.put("Day", SimulatorClass.getDayNum() +"");
+                        map.put("Field1", currentArr[1]);
+                        map.put("Field2", currentArr[2]);
+                        updateDatabase(map);
+                        
                     }
                 }
                 else if(currentArr[0] == "4")//train reaches a specific station
@@ -74,6 +79,13 @@ public class Breakpoint {
                     if(result == stationID)
                     {
                         found = true;
+                        HashMap<String,String> map = new HashMap<String,String>();
+                        map.put("Description", "Train Reached Specified Station");
+                        map.put("Minute", SimulatorCLass.getCurrentTime() +"");
+                        map.put("Day", SimulatorClass.getDayNum() +"");
+                        map.put("Field1", currentArr[1]);
+                        map.put("Field2", currentArr[2]);
+                        updateDatabase(map);
                     }
                 }
                 else if(currentArr[0] == "5")//train travels a specific distance
@@ -82,6 +94,14 @@ public class Breakpoint {
                     if(result == distance)//these are both strings
                     {
                         found = true;
+                        
+                        HashMap<String,String> map = new HashMap<String,String>();
+                        map.put("Description", "Train Travel Specified Distance");
+                        map.put("Minute", SimulatorCLass.getCurrentTime() +"");
+                        map.put("Day", SimulatorClass.getDayNum() +"");
+                        map.put("Field1", currentArr[1]);
+                        map.put("Field2", currentArr[2]);
+                        updateDatabase(map);
                     }
                 }
                 else if(currentArr[0] == "6")
@@ -93,25 +113,26 @@ public class Breakpoint {
                     //query for if complete
                     if(result = true)
                     {
-                        found = true
+                        found = true;
+                        HashMap<String,String> map = new HashMap<String,String>();
+                        map.put("Description", "Specified Train Route Complete");
+                        map.put("Minute", SimulatorCLass.getCurrentTime() +"");
+                        map.put("Day", SimulatorClass.getDayNum() +"");
+                        map.put("Field1", currentArr[1]);
+                        map.put("Field2", null);
+                        updateDatabase(map);
                     }
                 }
-                        */
+                     */   
             }
         }
         return found;
     }
     
     
-    private void updateDatabase()//probably need stuff in parameters
+    private void updateDatabase(HashMap<String, String> items)//type says what its updating
     {
-        HashMap<String,String> map = new HashMap<String,String>();
-        map.put("Description", "Specified Time was Reached");
-        map.put("Minute", SimulatorCLass.getCurrentTime() +"");
-        map.put("Day", SimulatorClass.getDayNum() +"");
-        map.put("Field1", SimulatorCLass.getCurrentTime() +"");
-        map.put("Field2", null);//none for Specific Time
         
-        MySQL.Insert("Breakpoints", map);
+        MySQL.Insert("Breakpoints", items);
     }
 }

@@ -57,34 +57,10 @@ public class SimulatorClass implements Runnable {
         return true;
     }
 
-    public static void updateWorld() {
-        
-        
-        //check if holiday/weekend first (probably based on days, so once we know how we can write something here)
-            //grab either normal or holiday or weekend schedule
-        
-        /*
-        //check for weather (Either in schedule or basedon days)
-        boolean badWeather = false;//assum,ing there is onlky bad or good weather. otherwise I would recomend ints
-        //increment trains based on weather
-        if(badWeather)
-        {
-            //increment based on bad weather
-        }
-        else
-        {
-            //increment trains         
-        }
-        */
-        //updatePassengers();
-        //updateStats();
-        routeManager.checkRouteComplete();
-    }
-    
-    public void updateStats()
+    public static void updateWorld() 
     {
-        //send all relevant info to the databse
         
+        routeManager.checkRouteComplete(currentTime);
     }
     
     /*
