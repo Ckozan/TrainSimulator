@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,45 +17,34 @@ import java.util.logging.Logger;
  */
 public class SimulatorClass implements Runnable {
     
-    public int currentTime = 0;
+    private static int currentTime = 0;
     private int ticketPrice;
-    private int dayNum = 0;
-    private ArrayList<String> currentSchedule = new ArrayList<String>();
-    //should me this 2d so that first value is train id and 2nd value and next stop
+    private static int dayNum = 1;
 
     @Override
     public void run() 
     {
         boolean shouldContinue = true; 
        
-        ticketPrice = database.getTicketPrice();//or something like that
+        //ticketPrice = database.getTicketPrice();//SELECT TicketPirce FROM Station WHERE 1=1
         setWeather();
+        routeManager.Initialize();
+	
+
         while(shouldContinue)
         {
-            if(Breakpoint.checkBreakpoint())//check for breakpoints here
-            {
-                try {
-                    wait();//should work for making this thread pause
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(SimulatorClass.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            else//if not found run the simulation like normal
-            {
                 shouldContinue = tick();//tick updates world each time it is called.
                 if(!shouldContinue)//goers in if its the end of the day
                 {
                    //show options screen here
                 
-                    //check last if user wants to go anohter day. if not leave should continue as false, otherwise make it true
-                
                 }
                 //no else because as long as tick has everything to update in it there shoiuld be nothing else happening here
             }
         }
-    }
     
-    public boolean tick() {
+    
+    public static boolean tick() {
         // Update world (train locations, and others)
         updateWorld();
         currentTime += 1;
@@ -67,14 +57,13 @@ public class SimulatorClass implements Runnable {
         return true;
     }
 
-    public void updateWorld() {
+    public static void updateWorld() {
         
         
         //check if holiday/weekend first (probably based on days, so once we know how we can write something here)
             //grab either normal or holiday or weekend schedule
-                int whichType = 0;
-                getSchedule(0);
         
+        /*
         //check for weather (Either in schedule or basedon days)
         boolean badWeather = false;//assum,ing there is onlky bad or good weather. otherwise I would recomend ints
         //increment trains based on weather
@@ -86,23 +75,10 @@ public class SimulatorClass implements Runnable {
         {
             //increment trains         
         }
-        updatePassengers();
-        updateStats();
-    }
-    
-    private void getSchedule(int scheduleType)//if 0, its normal schedule, 1 is weekend,and 3 is holiday
-    {
-        //will have to retunr/hold the schedule in some way so its easier to iterate through. 
-        currentSchedule.add("schedule");//this should call and in some way put the schedule in this array for ease of use
-    }
-    
-    public void updateRoutes()//could maybe be private
-    {
-        //call the algorithm to update trains routes
-        for(int i = 0; i < currentSchedule.size(); i++)
-        {
-            //iterate through list incrementing trains inn database and their class
-        }
+        */
+        //updatePassengers();
+        //updateStats();
+        routeManager.checkRouteComplete();
     }
     
     public void updateStats()
@@ -111,28 +87,60 @@ public class SimulatorClass implements Runnable {
         
     }
     
+    /*
     public void updatePassengers()//maybe should have a parameter of what train it is effecting
     {
         //how many off the train and how many added
+        ArrayList<train> list = getTrains();//get trains from train class
+        for(int i = 0; i < list.size(); i++)
+        {
+            if(list.current train at station)
+            {
+                if(list.current train just got to station)
+                {
+                    passengerUnloading(list.get(i).trainID);
+                    passengerBoarding(list.get(i).trainID);
+                }
+            }
+        }
     }
-    
-    public void setWeather()
+    */
+    private static void setWeather()
     {
         Random randGen = new Random();
         //get track array list from whatever ryan class then iterate through and set the tracks weather and what time the weather is happening(days). 
         //then put it into database
-        for(arrayList)
+        
+        for(int i = 0; i < Tracks.getSize(); i++)
         {
-            int weatherNum = randGen.nextInt(1000)+1;//should give a number between 1 and 1000
-            weatherNum = weatherToInt(weatherNum);
-            //update into 
-            //then put wetaher num into current part of databse
-            //stored in 
-            //iterate to next
+            //need to do this so many times for hours
+            for(int j = 0; j < 24; j++)
+            {
+                Track current = Tracks.getTrackByIndex();
+                int[] weatherTypes = new int[24];
+                int weatherNum = randGen.nextInt(1000)+1;//should give a number between 1 and 1000
+                weatherNum = weatherToInt(weatherNum);
+                weatherTypes[i] = weatherNum;
+                current.setWeather(weatherTypes);//set weather from ryans stuff
+                uploadWeatherDB(weatherTypes, current.getID());
+            }
         }
     }
-    
-    private int weatherToInt(int number)
+    private static void uploadWeatherDB(int[] weather[], String trackID)
+    {
+     for(int i = 0; i < 24; i++)
+     {
+         HashMap<String, String> map = new HashMap<String,String>();
+         map.put("WeatherID", weather[i]+"");
+         map.put("TrackID5", trackID);
+         map.put("Day", dayNum+"");
+         map.put("MinuteStarted", i*60+"");
+         map.put("MinuteEnded", (i+1)*60+"");
+         
+         MySQL.Instert("Weather_History", map);
+     }
+    }
+    private static int weatherToInt(int number)
     {
         int answer = 0;//sunny answer aka default
         if(number > 520)//everything but sunny
@@ -172,7 +180,7 @@ public class SimulatorClass implements Runnable {
     }
     
     //this is just to convert the numbers 0-6 into a string of what type of weather that is
-    public String intToWeather(int number)
+    public static String intToWeather(int number)
     {
         String answer = "Not Found"; 
         switch(number)
@@ -203,7 +211,8 @@ public class SimulatorClass implements Runnable {
         return answer;
     }
     
-    public void passengerBoarding(String train)//boards passengers onto trai
+    /*
+    public void passengerBoarding(String trainID)//boards passengers onto trai
     {
         if(NotFull)//idk how to figure out last stop right this second
         {
@@ -221,7 +230,8 @@ public class SimulatorClass implements Runnable {
         }
     }
     
-    public void passengerUnloading(String train)
+    
+    public void passengerUnloading(String trainID)
     {
         if(lastStop)//idk how to figure out last stop right this second
         {
@@ -237,5 +247,15 @@ public class SimulatorClass implements Runnable {
             CurrentTrain.passengeramount= passengeramount - amount;
         }
     }
+    */
     
+    public static int getDayNum()
+    {
+        return dayNum;
+    }
+    
+    public static int getCurrentTime()
+    {
+        return currentTime;
+    }
 }

@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -43,11 +44,13 @@ public class Breakpoint {
                 //[0] = type of condition.
                 if(currentArr[0] == "1")//specified time is reached
                 { //[1] = specifiedTime
-                    if(currentArr[1] == SimulatorClass.currentTime +"")//assuming its been made into the apporpriate format at some point in time
+                    if(currentArr[1] == SimulatorClass.getCurrentTime() +"")//assuming its been made into the apporpriate format at some point in time
                     {
-                        found = true;
+                        found = true;//could probably pause thread here, but wait for cams thread code for that
+                        updateDatabase();
                     }
                 }
+                /*
                 else if(currentArr[0] == "2")//station reaches a specific number of visits
                 {//[1] = stationID, [2] = times visited
                     //need qury of station id getting visited number
@@ -85,32 +88,12 @@ public class Breakpoint {
                 {
                     //this is a breakpoint for collision. so since that should never happen, for now i'm leaving it blank
                 }
-                
-                /*
-                else if(currentArr[0] == "7")//train takes a shift change
-                {//[1] ttrain id
-                    //we can query for this, or we can log how many shift changes its currently at when set and see if its gone up
-                    if(result == true)
-                    {
-                        found = true;
-                    }
-                }
-                        */
-                else if(currentArr[0] == "8")//train route complete
+                else if(currentArr[0] == "7")//train route complete
                 {//[1] = trainid
                     //query for if complete
                     if(result = true)
                     {
                         found = true
-                    }
-                }
-                /*
-                else if(currentArr[0] == "9")//numberof shift changes
-                {//[0] = number of overall shift changes
-                    //query for total number of shift changes
-                    if(result >= Integer.parseInt(currentArr[1]))
-                    {
-                        found = true;
                     }
                 }
                         */
@@ -120,5 +103,15 @@ public class Breakpoint {
     }
     
     
-    
+    private void updateDatabase()//probably need stuff in parameters
+    {
+        HashMap<String,String> map = new HashMap<String,String>();
+        map.put("Description", "Specified Time was Reached");
+        map.put("Minute", SimulatorCLass.getCurrentTime() +"");
+        map.put("Day", SimulatorClass.getDayNum() +"");
+        map.put("Field1", SimulatorCLass.getCurrentTime() +"");
+        map.put("Field2", null);//none for Specific Time
+        
+        MySQL.Insert("Breakpoints", map);
+    }
 }
